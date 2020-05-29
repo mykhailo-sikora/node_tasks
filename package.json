@@ -1,0 +1,18 @@
+{
+  "name": "lesson",
+  "version": "1.0.0",
+  "description": "learning",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Mykhailo Sikora",
+  "license": "ISC",
+  "dependencies": {
+    "express-handlebars": "^4.0.4"
+  },
+  "devDependencies": {
+    "express": "^4.17.1"
+  }
+}
