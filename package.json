@@ -10,7 +10,8 @@
   "author": "Mykhailo Sikora",
   "license": "ISC",
   "dependencies": {
-    "express-handlebars": "^4.0.4"
+    "express-handlebars": "^4.0.4",
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "express": "^4.17.1"
