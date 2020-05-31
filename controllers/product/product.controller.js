@@ -1,44 +1,66 @@
-const Product = require('../../models/Product');
+const {productService} = require('../../services');
 
 module.exports = {
     getProducts: async (req, res) => {
-        const products = await Product.fetchAll();
+        try {
+            const products = await productService.getAll();
 
-        res.json(products);
+            res.json(products);
+        } catch (e) {
+            res.json(e)
+        }
     },
 
     createProduct: async (req, res) => {
-        const {title, price} = req.body;
-        const product = new Product(title, price);
+        try {
+            const product = req.body;
 
-        await product.create();
+            await productService.create(product);
 
-        res.json({create: true})
+            res.sendStatus('201');
+        } catch (e) {
+            res.json(e);
+        }
     },
 
     getProduct: async (req, res) => {
-        const {id} = req.params;
+        try {
+            const {id} = req.params;
 
-        const product = await Product.findById(id);
+            const product = await productService.getOne(id);
 
-        res.json(product);
+            res.json(product)
+        } catch (e) {
+            res.json(e)
+        }
     },
 
     deleteProduct: async (req, res) => {
-        const {id} = req.params;
 
-        await Product.deleteById(id);
+        try {
+            const {id} = req.params;
 
-        res.json({deleted: true});
+            const idDeleted = await productService.delete(id);
+
+            idDeleted ? res.sendStatus(204) : res.json({deleted: false});
+
+        } catch (e) {
+            res.json(e)
+        }
+
     },
 
     updateProduct: async (req, res) => {
-        const {id} = req.params;
-        const {title, price} = req.body;
-        const product = new Product(title, price, id);
+        try {
+            const {id} = req.params;
+            const product = req.body;
 
-        await product.update();
+            const [idUpdate] = await productService.update(id, product);
 
-        res.json({update: true});
+            idUpdate ? res.sendStatus(200) : res.json({updated: false});
+
+        } catch (e) {
+            res.json(e)
+        }
     }
 };

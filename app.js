@@ -1,5 +1,8 @@
 const express = require('express');
 
+const db = require('./dataBase').getInstance();
+db.setModels();
+
 const router = require('./routes'); // шлях до усіх роутів
 
 const app = express();
