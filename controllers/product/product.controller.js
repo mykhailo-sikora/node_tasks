@@ -40,9 +40,9 @@ module.exports = {
         try {
             const {id} = req.params;
 
-            const idDeleted = await productService.delete(id);
+            const isDeleted = await productService.delete(id);
 
-            idDeleted ? res.sendStatus(204) : res.json({deleted: false});
+            isDeleted ? res.sendStatus(204) : res.json({deleted: false});
 
         } catch (e) {
             res.json(e)
@@ -55,9 +55,9 @@ module.exports = {
             const {id} = req.params;
             const product = req.body;
 
-            const [idUpdate] = await productService.update(id, product);
+            const [isUpdate] = await productService.update(id, product);
 
-            idUpdate ? res.sendStatus(200) : res.json({updated: false});
+            isUpdate ? res.sendStatus(200) : res.json({updated: false});
 
         } catch (e) {
             res.json(e)
