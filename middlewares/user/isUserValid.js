@@ -1,3 +1,8 @@
+const Joi = require('joi');
+
+const userValidationSchema = require('../../validators/user/newUserValidator');
+
+
 module.exports = async (req, res, next) => {
     try {
         const {name, surname, email, password} = req.body;
@@ -13,4 +18,4 @@ module.exports = async (req, res, next) => {
     } catch (e) {
         res.json({error: e.message})
     }
-}
+};
