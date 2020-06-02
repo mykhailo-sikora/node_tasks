@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
 
         const {error} = Joi.validate(user, userValidJoiSchema);
 
-        if (error) return next(new errorHandler('the user has not been updated because one of us is a teapot', 418, 40018));
+        if (error) return next(new errorHandler('The user has not been validated, because one of us is a teapot', 418, 40018));
 
         next();
     } catch (e) {

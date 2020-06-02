@@ -1,4 +1,7 @@
 const {productService} = require('../../services');
+const {hashPassword, checkHashPassword} = require('../../helpers');
+const {errorHandler} = require('../../errors');
+
 
 module.exports = {
     getProducts: async (req, res) => {
@@ -35,32 +38,40 @@ module.exports = {
         }
     },
 
-    deleteProduct: async (req, res) => {
+    deleteProduct: async (req, res, next) => {
 
         try {
             const {id} = req.params;
 
             const isDeleted = await productService.delete(id);
 
-            isDeleted ? res.sendStatus(204) : res.json({deleted: false});
+            if (isDeleted) {
+                res.sendStatus(204)
+            } else {
+                return next(new errorHandler('the product has not been deleted', 400, 4001))
+            }
 
         } catch (e) {
-            res.json(e)
+            res.json(e.message)
         }
 
     },
 
-    updateProduct: async (req, res) => {
+    updateProduct: async (req, res, next) => {
         try {
             const {id} = req.params;
             const product = req.body;
 
             const [isUpdate] = await productService.update(id, product);
 
-            isUpdate ? res.sendStatus(200) : res.json({updated: false});
+            if (isUpdate) {
+                res.sendStatus(200)
+            } else {
+                return next(new errorHandler('the product has not been updated', 400, 4001))
+            }
 
         } catch (e) {
-            res.json(e)
+            res.json(e.message)
         }
     }
 };

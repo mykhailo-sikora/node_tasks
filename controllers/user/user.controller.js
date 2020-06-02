@@ -36,21 +36,25 @@ module.exports = {
 
             res.json(user)
         } catch (e) {
-            res.json(e);
+            res.json(e)
         }
     },
 
-    deleteUser: async (req, res) => {
+    deleteUser: async (req, res, next) => {
 
         try {
             const {id} = req.params;
 
             const isDeleted = await userService.delete(id);
 
-            isDeleted ? res.sendStatus(204) : res.json({deleted: false})
+            if (isDeleted) {
+                res.sendStatus(204)
+            } else {
+                return next(new errorHandler('the user has not been deleted', 400, 4001))
+            }
 
         } catch (e) {
-            res.json(e)
+            res.json(e.message)
         }
     },
 
@@ -58,6 +62,7 @@ module.exports = {
         try {
             const {id} = req.params;
             const user = req.body;
+
             user.password = await hashPassword(user.password);
 
             const [isUpdate] = await userService.update(id, user);
@@ -65,7 +70,7 @@ module.exports = {
             if (isUpdate) {
                 res.sendStatus(200)
             } else {
-                return next(new errorHandler('the user has not been updated because one of us is a teapot', 418, 40018))
+                return next(new errorHandler('the user has not been updated', 400, 4001))
             }
 
         } catch (e) {
