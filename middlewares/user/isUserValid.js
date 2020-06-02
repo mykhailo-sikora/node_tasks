@@ -1,21 +1,20 @@
 const Joi = require('joi');
+const {errorHandler} = require('../../errors');
 
-const userValidationSchema = require('../../validators/user/newUserValidator');
+const {userValidJoiSchema} = require('../../validators');
 
 
 module.exports = async (req, res, next) => {
     try {
-        const {name, surname, email, password} = req.body;
 
-        if (!name || !surname || !email || !password) throw new Error('User is not valid');
+        const user = req.body;
 
-        if (!(name.length > 2 && surname.length > 2)) throw new Error('name or surname is not valid');
+        const {error} = Joi.validate(user, userValidJoiSchema);
 
-        if (password.length < 8) throw new Error('password is not valid');
-
+        if (error) return next(new errorHandler('the user has not been updated because one of us is a teapot', 418, 40018));
 
         next();
     } catch (e) {
-        res.json({error: e.message})
+        res.json('error', {message: e.message})
     }
 };

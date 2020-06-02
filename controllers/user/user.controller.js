@@ -54,17 +54,22 @@ module.exports = {
         }
     },
 
-    updateUser: async (req, res) => {
+    updateUser: async (req, res, next) => {
         try {
             const {id} = req.params;
             const user = req.body;
+            user.password = await hashPassword(user.password);
 
             const [isUpdate] = await userService.update(id, user);
 
-            isUpdate ? res.sendStatus(200) : res.json({updated: false});
+            if (isUpdate) {
+                res.sendStatus(200)
+            } else {
+                return next(new errorHandler('the user has not been updated because one of us is a teapot', 418, 40018))
+            }
 
         } catch (e) {
-            res.json(e)
+            res.json(e.message)
         }
     },
 
