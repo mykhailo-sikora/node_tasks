@@ -5,16 +5,13 @@ const {userValidJoiSchema} = require('../../validators');
 
 
 module.exports = async (req, res, next) => {
-    try {
 
-        const user = req.body;
+    const user = req.body;
 
-        const {error} = Joi.validate(user, userValidJoiSchema);
+    const {error} = Joi.validate(user, userValidJoiSchema);
 
-        if (error) return next(new errorHandler('The user has not been validated, because one of us is a teapot', 418, 40018));
+    if (error) return next(new errorHandler(error.details[0].message, 400, 4001));
 
-        next();
-    } catch (e) {
-        res.json('error', {message: e.message})
-    }
+    next();
+
 };
