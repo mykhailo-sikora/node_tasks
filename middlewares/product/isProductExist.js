@@ -1,16 +1,19 @@
-const Joi = require('joi');
+const {productService} = require('../../services');
 const {errorHandler} = require('../../errors');
 
-const {productValidJoiSchema} = require('../../validators');
-
-
 module.exports = async (req, res, next) => {
-    try {
-        const {id} = req.params;
-        if (isNaN(id) || +id < 0) throw new errorHandler('Product is not valid', 400, 4001);
 
-        next();
-    } catch (e) {
-        res.json({error: e.message})
+    const {productId} = req.params;
+
+    if (isNaN(productId) || +productId < 0) next(new errorHandler('Product is not valid', 400, 4001));
+
+    const product = await productService.getOne(productId);
+
+    if (!product) {
+        return next(new errorHandler('Product not found', 404, 4041));
     }
+    req.product = product;
+
+    next();
+
 };

@@ -28,9 +28,9 @@ module.exports = {
 
     getProduct: async (req, res) => {
         try {
-            const {id} = req.params;
+            const {productId} = req.params;
 
-            const product = await productService.getOne(id);
+            const product = await productService.getOne(productId);
 
             res.json(product)
         } catch (e) {
@@ -41,9 +41,9 @@ module.exports = {
     deleteProduct: async (req, res, next) => {
 
         try {
-            const {id} = req.params;
+            const {productId} = req.params;
 
-            const isDeleted = await productService.delete(id);
+            const isDeleted = await productService.delete(productId);
 
             if (isDeleted) {
                 res.sendStatus(204)
@@ -59,10 +59,10 @@ module.exports = {
 
     updateProduct: async (req, res, next) => {
         try {
-            const {id} = req.params;
+            const {productId} = req.params;
             const product = req.body;
 
-            const [isUpdate] = await productService.update(id, product);
+            const [isUpdate] = await productService.update(productId, product);
 
             if (isUpdate) {
                 res.sendStatus(200)

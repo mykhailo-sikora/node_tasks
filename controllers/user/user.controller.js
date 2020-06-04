@@ -30,9 +30,9 @@ module.exports = {
 
     getUser: async (req, res) => {
         try {
-            const {id} = req.params;
+            const {userId} = req.params;
 
-            const user = await userService.getOne(id);
+            const user = await userService.getOne(userId);
 
             res.json(user)
         } catch (e) {
@@ -43,9 +43,9 @@ module.exports = {
     deleteUser: async (req, res, next) => {
 
         try {
-            const {id} = req.params;
+            const {userId} = req.params;
 
-            const isDeleted = await userService.delete(id);
+            const isDeleted = await userService.delete(userId);
 
             if (isDeleted) {
                 res.sendStatus(204)
@@ -60,12 +60,12 @@ module.exports = {
 
     updateUser: async (req, res, next) => {
         try {
-            const {id} = req.params;
+            const {userId} = req.params;
             const user = req.body;
 
             user.password = await hashPassword(user.password);
 
-            const [isUpdate] = await userService.update(id, user);
+            const [isUpdate] = await userService.update(userId, user);
 
             if (isUpdate) {
                 res.sendStatus(200)

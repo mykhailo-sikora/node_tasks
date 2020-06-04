@@ -8,11 +8,11 @@ const {productController} = require('../../controllers');
 productRouter.get('/', productController.getProducts);
 productRouter.post('/', isProductValid, productController.createProduct);
 
-productRouter.put('/:id', isProductExist);
+productRouter.use('/:productId', isProductExist);
 
-productRouter.get('/:id', productController.getProduct);
-productRouter.put('/:id', isProductValid, productController.updateProduct);
-productRouter.delete('/:id', productController.deleteProduct);
+productRouter.get('/:productId', productController.getProduct);
+productRouter.put('/:productId', isProductValid, productController.updateProduct);
+productRouter.delete('/:productId', productController.deleteProduct);
 
 module.exports = productRouter;
 
