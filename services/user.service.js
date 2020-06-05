@@ -15,11 +15,10 @@ module.exports = {
     },
 
 
-    getOne: (id) => {
+    getByParams: (params) => {
         const UserModel = db.getModels(USERS);
-        return UserModel.findByPk(id);
+        return UserModel.findOne({where: params});
     },
-
 
     delete: (id) => {
         const UserModel = db.getModels(USERS);
