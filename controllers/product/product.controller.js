@@ -1,6 +1,5 @@
 const {productService} = require('../../services');
-const {hashPassword, checkHashPassword} = require('../../helpers');
-const {errorHandler} = require('../../errors');
+const {errorHandler, errors} = require('../../errors');
 
 
 module.exports = {

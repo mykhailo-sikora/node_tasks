@@ -20,6 +20,11 @@ module.exports = {
         return UserModel.findOne({where: params});
     },
 
+    getUserById: (userId) => {
+        const UserModel = db.getModels(USERS);
+        return UserModel.findByPk(userId);
+    },
+
     delete: (id) => {
         const UserModel = db.getModels(USERS);
         return UserModel.destroy({where: {id}});

@@ -5,3 +5,4 @@ module.exports.isUserValid = require('./user/isUserValid');
 module.exports.isUserExist = require('./user/isUserExist');
 
 module.exports.checkAccessToken = require('./auth/checkAccessToken.middleware');
+module.exports.checkRefreshToken = require('./auth/checkRefreshToken.middleware');

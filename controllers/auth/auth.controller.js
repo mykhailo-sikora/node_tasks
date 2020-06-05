@@ -1,6 +1,7 @@
 const {authService, userService} = require('../../services');
-const {tokinizer, checkHashPassword} = require('../../helpers');
-const {errorHandler} = require('../../errors');
+const {tokenizer, checkHashPassword} = require('../../helpers');
+const {errorHandler, errors} = require('../../errors');
+const {requestHeaders: {AUTHORIZATION}, responseStatusCodes} = require('../../constants');
 
 
 module.exports = {
@@ -10,13 +11,13 @@ module.exports = {
             const user = await userService.getByParams({email});
 
             if (!user) {
-                return next(new errorHandler('no user', 404, 4041))
+                return next(new errorHandler(errors.NOT_FOUND.message, responseStatusCodes.NOT_FOUND, errors.NOT_FOUND.code))
             }
             await checkHashPassword(user.password, password);
 
-            const tokens = tokinizer();
+            const tokens = tokenizer();
 
-            await authService.createTokenPair({...tokens, userId: 1});
+            await authService.createTokenPair({...tokens, userId: user.id});
 
             res.json(tokens)
         } catch (e) {
@@ -24,14 +25,39 @@ module.exports = {
         }
     },
 
+    logoutUser: async (req, res, next) => {
+        try {
+            const access_token = req.get(AUTHORIZATION);
 
-    logoutUser: async (req, res) => {
+            await authService.deleteByParams({access_token});
 
-        const access_token = req.get('Authorization');
+            res.sendStatus(200);
+        } catch (e) {
+            next(e)
+        }
+    },
 
-        await authService.deleteByParams({access_token});
+    refreshUser: async (req, res, next) => {
+        try {
+            const refresh_token = req.get(AUTHORIZATION);
+            const userId = req.userId;
 
-        res.sendStatus(200);
+            const user = await userService.getUserById(userId);
+
+            if (!user) {
+                return next(new errorHandler(errors.NOT_FOUND.message, responseStatusCodes.NOT_FOUND, errors.NOT_FOUND.code))
+            }
+
+            const tokens = tokenizer();
+
+            await authService.deleteByParams({refresh_token});
+
+            await authService.createTokenPair({...tokens, userId});
+
+            res.json(tokens);
+        } catch (e) {
+            next(e);
+        }
     }
 };
 
