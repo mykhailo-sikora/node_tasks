@@ -8,7 +8,7 @@ const {notFoundController} = require('../controllers');
 
 router.use('/product', productRouter);
 router.use('/user', userRouter);
-router.use('/auth',authRouter);
+router.use('/auth', authRouter);
 router.use('/', notFoundController);
 
 

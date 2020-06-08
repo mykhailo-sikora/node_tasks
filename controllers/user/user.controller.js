@@ -32,10 +32,11 @@ module.exports = {
         try {
             const {userId} = req.params;
 
-            const user = await userService.getOne(userId);
+            const user = await userService.getUserById(userId);
 
             res.json(user)
         } catch (e) {
+
             res.json(e)
         }
     },
@@ -62,7 +63,7 @@ module.exports = {
         try {
             const {userId} = req.params;
             const user = req.body;
-
+            console.log(user)
             user.password = await hashPassword(user.password);
 
             const [isUpdate] = await userService.update(userId, user);

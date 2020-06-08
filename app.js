@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 
 const db = require('./dataBase').getInstance();
 db.setModels();
@@ -28,4 +29,4 @@ app.use('*', (error, req, res, next) => {
 });
 
 
-app.listen(3000, () => console.log('server was started on port 3000'));
+app.listen(process.env.PORT || 3000, () => console.log(`server was started on port: ${process.env.PORT || 3000}`));

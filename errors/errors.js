@@ -9,6 +9,10 @@ module.exports = {
         message: 'Not valid token',
         code: 4011
     },
+    NOT_VALID: {
+        message: 'Not valid',
+        code: 4001
+    },
 
 
     //forbidden

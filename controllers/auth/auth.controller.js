@@ -1,3 +1,5 @@
+const Joi = require('joi');
+const {authValidJoiSchema} = require('../../validators');
 const {authService, userService} = require('../../services');
 const {tokenizer, checkHashPassword} = require('../../helpers');
 const {errorHandler, errors} = require('../../errors');
@@ -8,6 +10,9 @@ module.exports = {
     loginUser: async (req, res, next) => {
         try {
             const {email, password} = req.body;
+            const {error} = Joi.validate({email, password}, authValidJoiSchema);
+            if (error) return next(new errorHandler(error.details[0].message, responseStatusCodes.BAD_REQUEST, errors.NOT_VALID.code));
+
             const user = await userService.getByParams({email});
 
             if (!user) {

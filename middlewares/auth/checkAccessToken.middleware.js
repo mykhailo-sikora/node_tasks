@@ -4,7 +4,7 @@ const ErrorHandler = require('../../errors/ErrorHandler');
 
 const {errors} = require('../../errors');
 const {authService} = require('../../services');
-const {wordsForTokenizer: {JWT_SECRET, JWT_REFRESH_SECRET}, responseStatusCodes} = require('../../constants');
+const {TokenEnums: {JWT_SECRET, JWT_REFRESH_SECRET}, responseStatusCodes} = require('../../constants');
 
 
 module.exports = async (req, res, next) => {
@@ -12,12 +12,12 @@ module.exports = async (req, res, next) => {
     const token = req.get('Authorization');
 
     if (!token) {
-        return next(new ErrorHandler('No token', 400, 4002))
+        return next(new ErrorHandler(errors.NOT_VALID_TOKEN.message, responseStatusCodes.BAD_REQUEST, errors.NOT_VALID_TOKEN.code))
     }
 
     jwt.verify(token, JWT_SECRET, err => {
         if (err) {
-            return next(new ErrorHandler('Not valid token', 401, 4011));
+            return next(new ErrorHandler(errors.NOT_VALID_TOKEN.message, responseStatusCodes.BAD_REQUEST, errors.NOT_VALID_TOKEN.code));
         }
     });
 
