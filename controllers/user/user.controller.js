@@ -1,5 +1,16 @@
-const {userService} = require('../../services');
+const {userService, emailService} = require('../../services');
 const {hashPassword, checkHashPassword} = require('../../helpers');
+const {
+    EmailActionEnums: {
+        USER_REGISTER,
+        USER_UPDATE_PRODUCT,
+        USER_DELETE_PRODUCT,
+        USER_ADD_PRODUCT,
+        USER_UPDATE_USER,
+        USER_FORGOT_PASS
+    }
+} = require('../../constants');
+
 const {errorHandler} = require('../../errors');
 
 
@@ -21,6 +32,7 @@ module.exports = {
             user.password = await hashPassword(user.password);
 
             await userService.create(user);
+            await emailService.sendMail(user.email, USER_REGISTER, {userName: user.name});
 
             res.sendStatus('201');
         } catch (e) {
@@ -63,11 +75,15 @@ module.exports = {
         try {
             const {userId} = req.params;
             const user = req.body;
-            console.log(user)
+
             user.password = await hashPassword(user.password);
 
             const [isUpdate] = await userService.update(userId, user);
-
+            await emailService.sendMail(user.email, USER_UPDATE_USER, {
+                userName: user.name,
+                userSurname: user.surname,
+                userEmail: user.email
+            });
             if (isUpdate) {
                 res.sendStatus(200)
             } else {

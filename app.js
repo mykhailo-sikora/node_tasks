@@ -1,5 +1,8 @@
-const express = require('express');
 require('dotenv').config();
+const {dataBaseEnums: {PORT}} = require('./constants/');
+
+const express = require('express');
+const morgan = require('morgan');
 
 const db = require('./dataBase').getInstance();
 db.setModels();
@@ -8,9 +11,9 @@ const router = require('./routes'); // шлях до усіх роутів
 
 const app = express();
 
+app.use(morgan('dev')); // debug
 app.use(express.json());
 app.use(express.urlencoded());
-
 
 app.use(router);
 
@@ -29,4 +32,4 @@ app.use('*', (error, req, res, next) => {
 });
 
 
-app.listen(process.env.PORT || 3000, () => console.log(`server was started on port: ${process.env.PORT || 3000}`));
+app.listen(PORT, () => console.log(`server was started on port: ${PORT}`));

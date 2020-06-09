@@ -10,7 +10,9 @@ module.exports = {
     loginUser: async (req, res, next) => {
         try {
             const {email, password} = req.body;
+
             const {error} = Joi.validate({email, password}, authValidJoiSchema);
+
             if (error) return next(new errorHandler(error.details[0].message, responseStatusCodes.BAD_REQUEST, errors.NOT_VALID.code));
 
             const user = await userService.getByParams({email});
@@ -45,6 +47,7 @@ module.exports = {
     refreshUser: async (req, res, next) => {
         try {
             const refresh_token = req.get(AUTHORIZATION);
+
             const userId = req.userId;
 
             const user = await userService.getUserById(userId);
