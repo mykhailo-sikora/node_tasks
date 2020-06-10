@@ -75,7 +75,6 @@ module.exports = {
 
     updateProduct: async (req, res, next) => {
         try {
-
             const {productId} = req.params;
             const product = req.body;
 
