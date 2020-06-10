@@ -1,6 +1,19 @@
 const {productService, userService, emailService} = require('../../services');
-const {errorHandler, errors} = require('../../errors');
 const {
+    errorHandler, errors: {
+        NOT_UPDATE,
+        NOT_GET,
+        NOT_CREATED,
+        NOT_DELETE
+    }
+} = require('../../errors');
+const {
+    responseStatusCodes: {
+        NOT_FOUND_CODE,
+        OK,
+        CREATED,
+        NO_CONTENT
+    },
     EmailActionEnums: {
         USER_UPDATE_PRODUCT,
         USER_DELETE_PRODUCT,
@@ -25,13 +38,13 @@ module.exports = {
             const product = req.body;
             const isCreated = await productService.create(product);
 
-            if (!isCreated) return next(new errorHandler('product not created', 400, 4001));
+            if (!isCreated) return next(new errorHandler(NOT_CREATED.message, NOT_FOUND_CODE, NOT_CREATED.code));
 
             const user = await userService.getUserById(req.userId);
 
             await emailService.sendMail(user.email, USER_ADD_PRODUCT, {user, product});
 
-            res.sendStatus('201');
+            res.sendStatus(CREATED);
         } catch (e) {
             res.json(e);
         }
@@ -52,23 +65,18 @@ module.exports = {
     deleteProduct: async (req, res, next) => {
 
         try {
-            const product = req.body;
             const {productId} = req.params;
-
+            const product = await productService.getOne(productId);
+            const user = await userService.getUserById(req.userId);
             const isDeleted = await productService.delete(productId);
 
-            if (isDeleted) {
-                res.sendStatus(204)
-            } else {
-                return next(new errorHandler('the product has not been deleted', 400, 4001))
-            }
-
-            const user = await userService.getUserById(req.userId);
+            if (!isDeleted) return next(new errorHandler(NOT_DELETE.message, NOT_FOUND_CODE, NOT_DELETE.code));
 
             await emailService.sendMail(user.email, USER_DELETE_PRODUCT, {user, product});
 
+            res.sendStatus(NO_CONTENT);
         } catch (e) {
-            res.json(e.message)
+            next(e);
         }
 
     },
@@ -77,20 +85,17 @@ module.exports = {
         try {
             const {productId} = req.params;
             const product = req.body;
-
+            const user = await userService.getUserById(req.userId);
             const [isUpdate] = await productService.update(productId, product);
 
-            if (isUpdate) {
-                res.sendStatus(200)
-            } else {
-                return next(new errorHandler('the product has not been updated', 400, 4001))
-            }
-            const user = await userService.getUserById(req.userId);
+            if (!isUpdate) return next(new errorHandler(NOT_UPDATE.message, NOT_FOUND_CODE, NOT_UPDATE.code));
 
             await emailService.sendMail(user.email, USER_UPDATE_PRODUCT, {user, product});
 
+            res.sendStatus(OK);
+
         } catch (e) {
-            res.json(e.message)
+            next(e);
         }
     }
 };

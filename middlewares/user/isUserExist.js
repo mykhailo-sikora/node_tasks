@@ -1,20 +1,19 @@
 const {userService} = require('../../services');
 const {errorHandler} = require('../../errors');
 
-const {errors} = require('../../errors');
-const {responseStatusCodes} = require('../../constants');
+const {errors: {NOT_VALID}} = require('../../errors');
+const {responseStatusCodes: {BAD_REQUEST, NOT_FOUND_CODE}} = require('../../constants');
 
 module.exports = async (req, res, next) => {
 
     const {userId} = req.params;
 
-    if (isNaN(userId) && +userId < 0) next(new errorHandler(errors.NOT_VALID.message, responseStatusCodes.BAD_REQUEST, errors.NOT_VALID.code));
+    if (isNaN(userId) && +userId < 0) next(new errorHandler(NOT_VALID.message, BAD_REQUEST, NOT_VALID.code));
 
     const user = await userService.getUserById(userId);
 
-    if (!user) {
-        return next(new errorHandler(errors.NOT_FOUND.message, responseStatusCodes.NOT_FOUND, errors.NOT_FOUND.code))
-    }
+    if (!user) return next(new errorHandler(NOT_FOUND.message, NOT_FOUND_CODE, NOT_FOUND.code));
+
     user.req = user;
 
     next();
