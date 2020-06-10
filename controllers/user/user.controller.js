@@ -1,32 +1,12 @@
 const {userService, emailService} = require('../../services');
 const {hashPassword, checkHashPassword} = require('../../helpers');
 const {
-    responseStatusCodes: {
-        NOT_FOUND_CODE,
-        BAD_REQUEST,
-        UNAUTHORIZED,
-        CREATED,
-        FORBIDDEN,
-        NO_CONTENT,
-        OK
-    },
-    EmailActionEnums: {
-        USER_REGISTER,
-        USER_UPDATE_USER,
-        USER_DELETE_USER
-    }
+    responseStatusCodes: {NOT_FOUND_CODE, CREATED, NO_CONTENT, OK},
+    EmailActionEnums: {USER_REGISTER, USER_UPDATE_USER, USER_DELETE_USER}
 } = require('../../constants');
 
 const {
-    errorHandler, errors: {
-        NOT_FOUND,
-        NOT_UPDATE,
-        NOT_GET,
-        NOT_CREATED,
-        NOT_VALID,
-        NOT_VALID_TOKEN,
-        NOT_DELETE
-    }
+    errorHandler, errors: {NOT_UPDATE, NOT_GET, NOT_CREATED, NOT_DELETE, NOT_FOUND}
 } = require('../../errors');
 
 
@@ -116,9 +96,7 @@ module.exports = {
             const {email, password} = req.body;
             const user = await userService.signUp({email});
 
-            if (!user) {
-                return next(new errorHandler('User is not found', 404, 4041));
-            }
+            if (!user) return next(new errorHandler(NOT_FOUND.message, NOT_FOUND_CODE, NOT_FOUND.code));
 
             await checkHashPassword(user.password, password);
 

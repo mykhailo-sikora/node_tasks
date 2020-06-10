@@ -2,7 +2,6 @@ const {productService, userService, emailService} = require('../../services');
 const {
     errorHandler, errors: {
         NOT_UPDATE,
-        NOT_GET,
         NOT_CREATED,
         NOT_DELETE
     }
