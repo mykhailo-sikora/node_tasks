@@ -2,8 +2,16 @@ extends template
 block content
     div
         br
-        p Hey #{userName},
+        p Hey #{user.name},
         | Great new!
-        | U are add new position in our shop <3
+        | U are add new position in our shop:
         br
-        | Good job, #{userName}!
+        br
+        |Titile: #{product.title}
+        br
+        |Prise: #{product.price}$
+        br
+        |Description: #{product.description}
+        br
+        br
+        | Good job, see u later!

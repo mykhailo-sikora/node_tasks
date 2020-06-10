@@ -8,28 +8,28 @@ module.exports = {
         templateName: 'registrationUserTemplate'
     },
 
-    [EmailActionEnums.USER_FORGOT_PASS]: {
-        subject: '[TruShopByRykojop] Ooops, maybe u forgot password? ',
-        templateName: 'forgotTemplate'
+    [EmailActionEnums.USER_DELETE_USER]: {
+        subject: '[TruShopByRykojop] ACCOUNT WAS DELETED ',
+        templateName: 'deleteUserTemplate'
     },
 
     [EmailActionEnums.USER_UPDATE_USER]: {
-        subject: '[TruShopByRykojop] Great(!) u are update some information about yourself',
+        subject: '[TruShopByRykojop] ACCOUNT WAS UPDATED',
         templateName: 'updateUserTemplate'
     },
 
     [EmailActionEnums.USER_ADD_PRODUCT]: {
-        subject: '[TruShopByRykojop] E-he-hey, user add new product',
+        subject: '[TruShopByRykojop] CREATE PRODUCT',
         templateName: 'addProductTemplate'
     },
 
     [EmailActionEnums.USER_UPDATE_PRODUCT]: {
-        subject: '[TruShopByRykojop] E-he-hey, user update product, all is correct?',
+        subject: '[TruShopByRykojop] UPDATE PRODUCT',
         templateName: 'updateProductTemplate'
     },
 
     [EmailActionEnums.USER_DELETE_PRODUCT]: {
-        subject: '[TruShopByRykojop] E-he-hey, u delete some product, sure?',
+        subject: '[TruShopByRykojop] DELETE PRODUCT',
         templateName: 'deleteProductTemplate'
     }
 

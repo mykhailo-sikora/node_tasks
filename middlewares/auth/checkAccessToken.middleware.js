@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
         }
     });
 
-    const tokensFromDataBase = authService.getTokenByParams({access_token: token});
+    const tokensFromDataBase = await authService.getTokenByParams({access_token: token});
 
     if (!tokensFromDataBase) {
         return next(new ErrorHandler(
@@ -32,6 +32,7 @@ module.exports = async (req, res, next) => {
     }
 
     req.userId = tokensFromDataBase.userId;
+
     next();
 
 };

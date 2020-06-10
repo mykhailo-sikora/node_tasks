@@ -2,14 +2,17 @@ extends template
 block content
     div
         br
-        p Hey, great news!
+        p Hey,
         | U are update some information in your profile <3
+        br
+        br
         | check info:
         br
-        | Your name: #{userName}
+        | Your name: #{user.name}
         br
-        | Your surname: #{userSurname}
+        | Your surname: #{user.surname}
         br
-        | Your email: #{userEmail}
+        | Your email: #{user.email}
+        br
         br
         | Good job, see u later!

@@ -1,6 +1,6 @@
 module.exports = {
     USER_REGISTER: '0',
-    USER_FORGOT_PASS: '1',
+    USER_DELETE_USER: '1',
     USER_UPDATE_USER: '2',
     USER_ADD_PRODUCT: '3',
     USER_UPDATE_PRODUCT: '4',
