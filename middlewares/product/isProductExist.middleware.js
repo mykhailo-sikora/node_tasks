@@ -1,7 +1,5 @@
 const {productService} = require('../../services');
-const {errorHandler} = require('../../errors');
-
-const {errors: {NOT_FOUND, NOT_VALID}} = require('../../errors');
+const {errorHandler, responseCustomCode: {NOT_FOUND, NOT_VALID}} = require('../../errors');
 const {responseStatusCodes: {NOT_FOUND_CODE, BAD_REQUEST}} = require('../../constants');
 
 module.exports = async (req, res, next) => {

@@ -1,12 +1,32 @@
+const uuid = require('uuid').v1();
+const fsx = require('fs-extra').promises;
+const path = require('path');
+
 const {userService, emailService} = require('../../services');
 const {hashPassword, checkHashPassword} = require('../../helpers');
 const {
-    responseStatusCodes: {NOT_FOUND_CODE, CREATED, NO_CONTENT, OK},
-    EmailActionEnums: {USER_REGISTER, USER_UPDATE_USER, USER_DELETE_USER}
+    responseStatusCodes: {
+        NOT_FOUND_CODE,
+        CREATED,
+        NO_CONTENT,
+        OK
+    },
+    EmailActionEnum: {
+        USER_REGISTER,
+        USER_UPDATE_USER,
+        USER_DELETE_USER
+    }
 } = require('../../constants');
 
 const {
-    errorHandler, errors: {NOT_UPDATE, NOT_GET, NOT_CREATED, NOT_DELETE, NOT_FOUND}
+    errorHandler,
+    responseCustomCode: {
+        NOT_UPDATE,
+        NOT_GET,
+        NOT_CREATED,
+        NOT_DELETE,
+        NOT_FOUND
+    }
 } = require('../../errors');
 
 
@@ -26,10 +46,19 @@ module.exports = {
     createUser: async (req, res, next) => {
         try {
             const user = req.body;
+            const [profilePhoto] = req.photos;
 
             user.password = await hashPassword(user.password);
 
             const isCreated = await userService.create(user);
+            const photoDir = `users/${isCreated.id}/photos`;
+            //const fileExtension = path.extname(profilePhoto.name);
+            const fileExtension = profilePhoto.name.split('.').pop();
+            const photoName = `${uuid}.${fileExtension}`;
+
+            await fsx.mkdir(path.resolve(process.cwd(), 'public', photoDir), {recursive: true});
+            await profilePhoto.mv(path.resolve(process.cwd(), 'public', photoDir, photoName));
+            await userService.updateById(isCreated.id, {photo: `${photoDir}/${photoName}`});
 
             if (!isCreated) return next(new errorHandler(NOT_CREATED.message, NOT_FOUND_CODE, NOT_CREATED.code));
 
@@ -44,7 +73,6 @@ module.exports = {
     getUser: async (req, res) => {
         try {
             const {userId} = req.params;
-
             const user = await userService.getUserById(userId);
 
             res.json(user)

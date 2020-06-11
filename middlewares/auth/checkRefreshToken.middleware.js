@@ -1,12 +1,13 @@
 const jwt = require('jsonwebtoken');
+
 const ErrorHandler = require('../../errors/ErrorHandler');
 const {
-    TokenEnums: {JWT_REFRESH_SECRET},
+    TokenEnum: {JWT_REFRESH_SECRET},
     responseStatusCodes: {BAD_REQUEST, UNAUTHORIZED},
     requestHeaders: {AUTHORIZATION}
 } = require('../../constants');
 
-const {errors: {NOT_VALID_TOKEN, NOT_VALID}} = require('../../errors');
+const {responseCustomCode: {NOT_VALID_TOKEN, NOT_VALID}} = require('../../errors');
 const {authService} = require('../../services');
 
 module.exports = async (req, res, next) => {

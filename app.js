@@ -1,35 +1,20 @@
 require('dotenv').config();
-const {dataBaseEnums: {PORT}} = require('./constants/');
-
 const express = require('express');
+const expressFileUpload = require('express-fileupload');
+const path = require('path');
 const morgan = require('morgan');
-
+const {dataBaseEnum: {PORT}} = require('./constants/');
 const db = require('./dataBase').getInstance();
 db.setModels();
 
-const router = require('./routes'); // шлях до усіх роутів
-
+const router = require('./routes');
 const app = express();
 
-app.use(morgan('dev')); // debug
+app.use(morgan('dev'));
+app.use(expressFileUpload({}));
 app.use(express.json());
 app.use(express.urlencoded());
-
+app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(router);
-
-app.use('*', (error, req, res, next) => {
-    let message = error.message;
-
-    if (error.parent) {
-        message = error.parent.sqlMessage
-    }
-    res
-        .status(error.status || 400)
-        .json({
-            message,
-            code: error.custumCode
-        })
-});
-
 
 app.listen(PORT, () => console.log(`server was started on port: ${PORT}`));

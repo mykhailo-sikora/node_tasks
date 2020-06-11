@@ -1,23 +1,11 @@
 const {productService, userService, emailService} = require('../../services');
 const {
-    errorHandler, errors: {
-        NOT_UPDATE,
-        NOT_CREATED,
-        NOT_DELETE
-    }
+    errorHandler,
+    responseCustomCode: {NOT_UPDATE, NOT_CREATED, NOT_DELETE}
 } = require('../../errors');
 const {
-    responseStatusCodes: {
-        NOT_FOUND_CODE,
-        OK,
-        CREATED,
-        NO_CONTENT
-    },
-    EmailActionEnums: {
-        USER_UPDATE_PRODUCT,
-        USER_DELETE_PRODUCT,
-        USER_ADD_PRODUCT,
-    }
+    responseStatusCodes: {NOT_FOUND_CODE, OK, CREATED, NO_CONTENT},
+    EmailActionEnum: {USER_UPDATE_PRODUCT, USER_DELETE_PRODUCT, USER_ADD_PRODUCT,}
 } = require('../../constants');
 
 
@@ -52,7 +40,6 @@ module.exports = {
     getProduct: async (req, res) => {
         try {
             const {productId} = req.params;
-
             const product = await productService.getOne(productId);
 
             res.json(product)

@@ -1,7 +1,6 @@
 const {userService} = require('../../services');
 const {errorHandler} = require('../../errors');
-
-const {errors: {NOT_VALID}} = require('../../errors');
+const {responseCustomCode: {NOT_VALID}} = require('../../errors');
 const {responseStatusCodes: {BAD_REQUEST, NOT_FOUND_CODE}} = require('../../constants');
 
 module.exports = async (req, res, next) => {
@@ -17,5 +16,4 @@ module.exports = async (req, res, next) => {
     user.req = user;
 
     next();
-
 };

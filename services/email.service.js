@@ -1,12 +1,9 @@
 const nodeMailer = require('nodemailer');
 const EmailTemplates = require('email-templates');
-
 const path = require('path');
 
-const {EmailEnums: {NODE_MAILER_SERVICE, NODE_MAILER_USER, NODE_MAILER_PASS}} = require('../constants/');
+const {EmailEnum: {NODE_MAILER_SERVICE, NODE_MAILER_USER, NODE_MAILER_PASS}} = require('../constants/');
 const htmlTemplates = require('../emailTemplates/mainEmailTemplate');
-
-
 const transporter = nodeMailer.createTransport({
     service: NODE_MAILER_SERVICE,
     auth: {
@@ -15,7 +12,6 @@ const transporter = nodeMailer.createTransport({
     },
 });
 
-
 const emailTemplates = new EmailTemplates({
     message: null,
     views: {
@@ -23,12 +19,10 @@ const emailTemplates = new EmailTemplates({
     }
 });
 
-
 class EmailService {
     async sendMail(userMail, action, context) {
         const templateInfo = htmlTemplates[action];
         const html = await emailTemplates.render(templateInfo.templateName, context);
-
         const mailOptions = {
             from: 'TruNodeMailSender',
             to: userMail,

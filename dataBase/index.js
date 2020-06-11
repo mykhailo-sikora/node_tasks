@@ -2,22 +2,15 @@ const Sequelize = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 
-const {dataBaseEnums: {DB_NAME, DB_USER, DB_PASSWORD, DB_HOST}} = require('../constants');
+const {dataBaseEnum: {DB_NAME, DB_USER, DB_PASSWORD, DB_HOST}} = require('../constants');
 
 module.exports = (() => {
     let instance;
 
     function initConnection() {
-        const client = new Sequelize(
-            DB_NAME,
-            DB_USER,
-            DB_PASSWORD, {
-                host: DB_HOST,
-                dialect: 'mysql'
-            });
+        const client = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {host: DB_HOST, dialect: 'mysql'});
 
         let models = {};
-
 
         function getModels() {
             fs.readdir(path.join(process.cwd(), 'dataBase', 'models'), (err, files) => {
@@ -40,5 +33,4 @@ module.exports = (() => {
             return instance;
         }
     }
-
 })();
