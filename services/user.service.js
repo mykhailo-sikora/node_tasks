@@ -27,10 +27,6 @@ module.exports = {
         const UserModel = db.getModels(USERS);
         return UserModel.update(user, {where: {id}})
     },
-    updateById: (id, userFiles) => {
-        const UserModel = db.getModels(USERS);
-        return UserModel.update(userFiles, {where: {id}})
-    },
     signUp: (params) => {
         const UserModel = db.getModels(USERS);
         return UserModel.findOne({where: params})

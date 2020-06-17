@@ -4,6 +4,10 @@ module.exports = (sequelize, DataTypes) => sequelize.define('Product', {
         primaryKey: true,
         autoIncrement: true
     },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     title: {
         type: DataTypes.STRING,
         unique: true,
@@ -16,6 +20,9 @@ module.exports = (sequelize, DataTypes) => sequelize.define('Product', {
     description: {
         type: DataTypes.TEXT,
         allowNull: false
+    },
+    photo: {
+        type: DataTypes.STRING
     }
 }, {
     tableName: 'products',

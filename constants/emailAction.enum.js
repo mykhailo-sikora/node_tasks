@@ -4,5 +4,6 @@ module.exports = {
     USER_UPDATE_USER: '2',
     USER_ADD_PRODUCT: '3',
     USER_UPDATE_PRODUCT: '4',
-    USER_DELETE_PRODUCT: '5'
+    USER_DELETE_PRODUCT: '5',
+    USER_FORGOT_UPDATE_PRODUCT: '6'
 };

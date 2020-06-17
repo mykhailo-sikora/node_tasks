@@ -7,7 +7,7 @@ userRouter.get('/', userController.getUsers);
 userRouter.post('/', isUserValid, checkFiles, checkUserPhotoCount, userController.createUser);
 userRouter.use('/:userId', isUserExist);
 userRouter.get('/:userId', userController.getUser);
-userRouter.put('/:userId', isUserValid, checkFiles, checkUserPhotoCount, userController.updateUser);
+userRouter.put('/:userId', isUserValid, checkUserPhotoCount, userController.updateUser);
 userRouter.delete('/:userId', userController.deleteUser);
 userRouter.post('/auth', userController.authUser);
 

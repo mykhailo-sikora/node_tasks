@@ -26,19 +26,19 @@ module.exports = {
         code: 4041
     },
     NOT_CREATED: {
-        message: 'Data cant created',
+        message: 'Data can`t created',
         code: 4042
     },
     NOT_GET: {
-        message: 'Data cant get',
+        message: 'Data can`t get',
         code: 4043
     },
     NOT_UPDATE: {
-        message: 'Data cant update',
+        message: 'Data can`t update',
         code: 4044
     },
     NOT_DELETE: {
-        message: 'Data cant delete',
+        message: 'Data can`t delete',
         code: 4045
     },
     NOT_UPLOAD_PHOTO: {

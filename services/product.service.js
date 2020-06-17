@@ -22,5 +22,10 @@ module.exports = {
     update: (id, product) => {
         const ProductModel = db.getModels(PRODUCT);
         return ProductModel.update(product, {where: {id}})
+    },
+    findAllByParams: (params) => {
+        const ProductModel = db.getModels(PRODUCT);
+        return ProductModel.findAll({where: params})
+
     }
 };

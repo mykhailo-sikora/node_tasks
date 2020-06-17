@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const express = require('express');
 const expressFileUpload = require('express-fileupload');
 const path = require('path');
@@ -18,3 +19,6 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(router);
 
 app.listen(PORT, () => console.log(`server was started on port: ${PORT}`));
+
+const {cron} = require('./crons');
+cron();

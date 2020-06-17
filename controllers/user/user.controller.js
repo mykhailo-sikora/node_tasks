@@ -52,13 +52,12 @@ module.exports = {
 
             const isCreated = await userService.create(user);
             const photoDir = `users/${isCreated.id}/photos`;
-            //const fileExtension = path.extname(profilePhoto.name);
-            const fileExtension = profilePhoto.name.split('.').pop();
-            const photoName = `${uuid}.${fileExtension}`;
+            const fileExtension = path.extname(profilePhoto.name);
+            const photoName = `${uuid}${fileExtension}`;
 
             await fsx.mkdir(path.resolve(process.cwd(), 'public', photoDir), {recursive: true});
             await profilePhoto.mv(path.resolve(process.cwd(), 'public', photoDir, photoName));
-            await userService.updateById(isCreated.id, {photo: `${photoDir}/${photoName}`});
+            await userService.update(isCreated.id, {photo: `${photoDir}/${photoName}`});
 
             if (!isCreated) return next(new errorHandler(NOT_CREATED.message, NOT_FOUND_CODE, NOT_CREATED.code));
 

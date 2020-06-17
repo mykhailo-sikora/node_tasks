@@ -1,7 +1,10 @@
+const uuid = require('uuid').v1();
+const fsx = require('fs-extra').promises;
+const path = require('path');
+
 const {productService, userService, emailService} = require('../../services');
 const {
-    errorHandler,
-    responseCustomCode: {NOT_UPDATE, NOT_CREATED, NOT_DELETE}
+    errorHandler, responseCustomCode: {NOT_UPDATE, NOT_CREATED, NOT_DELETE}
 } = require('../../errors');
 const {
     responseStatusCodes: {NOT_FOUND_CODE, OK, CREATED, NO_CONTENT},
@@ -23,7 +26,16 @@ module.exports = {
     createProduct: async (req, res, next) => {
         try {
             const product = req.body;
+            product.userId = req.userId;
+            const [productPhoto] = req.photos;
             const isCreated = await productService.create(product);
+            const photoDir = `products/${isCreated.id}/photos`;
+            const fileExtension = path.extname(productPhoto.name);
+            const photoName = `${uuid}${fileExtension}`;
+
+            await fsx.mkdir(path.resolve(process.cwd(), 'public', photoDir), {recursive: true});
+            await productPhoto.mv(path.resolve(process.cwd(), 'public', photoDir, photoName));
+            await productService.update(isCreated.id, {photo: `${photoDir}/${photoName}`});
 
             if (!isCreated) return next(new errorHandler(NOT_CREATED.message, NOT_FOUND_CODE, NOT_CREATED.code));
 
@@ -49,7 +61,6 @@ module.exports = {
     },
 
     deleteProduct: async (req, res, next) => {
-
         try {
             const {productId} = req.params;
             const product = await productService.getOne(productId);
@@ -65,6 +76,22 @@ module.exports = {
             next(e);
         }
 
+    },
+    deletePhotoProduct: async (req, res, next) => {
+        try {
+            const {productId} = req.params;
+            const isProductUpdate = await productService.update(productId, {photo: null});
+
+            if (!isProductUpdate) return next(new errorHandler(NOT_DELETE.message, NOT_FOUND_CODE, NOT_DELETE.code));
+
+            res.sendStatus(NO_CONTENT);
+
+            //other way
+            // req.process.photo = null;
+            // await req.product.save();
+        } catch (e) {
+            next(e);
+        }
     },
 
     updateProduct: async (req, res, next) => {

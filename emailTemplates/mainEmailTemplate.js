@@ -5,7 +5,8 @@ const {
         USER_DELETE_PRODUCT,
         USER_DELETE_USER,
         USER_UPDATE_USER,
-        USER_REGISTER
+        USER_REGISTER,
+        USER_FORGOT_UPDATE_PRODUCT
     }
 } = require('../constants');
 
@@ -39,5 +40,9 @@ module.exports = {
     [USER_DELETE_PRODUCT]: {
         subject: '[TruShopByRykojop] DELETE PRODUCT',
         templateName: 'deleteProductTemplate'
-    }
+    },
+    [USER_FORGOT_UPDATE_PRODUCT]: {
+        subject: '[TruShopByRykojop] UPDATE FOTO BY PRODUCT',
+        templateName: 'userUpdatePhotoByProd'
+    },
 };
